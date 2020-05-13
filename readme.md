@@ -71,6 +71,7 @@ TENANT=https://<yourtenant>
 TOKEN=<your api token>
 ENTITY_TYPE_ID=<id of the entity user type>
 PORT=5000
+AUTHZ_KEY=<a value>
 ```
 - Host the service at a public address
 
