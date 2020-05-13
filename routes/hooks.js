@@ -23,40 +23,18 @@ module.exports = function (){
                 });              
                 
                 if(match){
-                    var entityIdCommand = {
+                    var customerCodeCommand = {
                         'type': 'com.okta.access.patch',
                         'value': [
                             {
                                 'op': 'add',
-                                'path': '/claims/entity_id',
-                                'value': resp.data.profile.entityId
+                                'path': '/claims/customer_code',
+                                'value': resp.data.profile.customerCode
                             }
                         ]
                     }
-                    structure[commands].push(entityIdCommand)
+                    structure[commands].push(customerCodeCommand)
 
-                    var entityNameCommand = {
-                        'type': 'com.okta.identity.patch',
-                        'value': [
-                            {
-                                'op': 'add',
-                                'path': '/claims/entity_name',
-                                'value': resp.data.profile.entityName
-                            }
-                        ]
-                    }
-                    structure[commands].push(entityNameCommand)
-
-                    var loaCommand = {
-                        'type': 'com.okta.access.patch',
-                        'value': [
-                            {
-                                'op': 'add',
-                                'path': '/claims/LOA',
-                                'value': resp.data.profile.LOA
-                            }
-                        ]
-                    }
                     structure[commands].push(loaCommand)
                 }
             }
