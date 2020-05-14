@@ -8,7 +8,12 @@ router.get("/agents", async function(req,res) {
     try{
         var resp = await axios.get(process.env.TENANT+'api/v1/users/'+req.query.id)
         if(resp.data.type.id == process.env.ENTITY_TYPE_ID){
-            res.status(200).json({agents: resp.data.profile.delegatedAgents})
+            var agents = []
+            for(var entry in resp.data.profile.delegatedAgents){
+                var agent = await axios.get(process.env.TENANT + '/api/v1/users/'+ entry)
+                agents.push(new agentmodel(agent.data))
+                }
+            res.status(200).json({agents: agents})
         }
         else {
             res.status(200).json({error: "Not an entity"})
