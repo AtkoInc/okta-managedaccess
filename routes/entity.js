@@ -10,7 +10,7 @@ router.get("/agents", async function(req,res) {
         if(resp.data.type.id == process.env.ENTITY_TYPE_ID){
             var agents = []
             for(var entry in resp.data.profile.delegatedAgents){
-                var agent = await axios.get(process.env.TENANT + '/api/v1/users/'+ entry)
+                var agent = await axios.get(process.env.TENANT + 'api/v1/users/'+resp.data.profile.delegatedAgents[entry])
                 agents.push(new agentmodel(agent.data))
                 }
             res.status(200).json({agents: agents})
