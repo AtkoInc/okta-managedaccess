@@ -9,7 +9,8 @@ module.exports = function (){
 //get the current entities an user can represent    
 router.get("/", async function(req,res) {
     try{
-        var query = querystring.stringify({search: 'profile.delegatedAgents eq "' + req.query.id + '"'})
+        var userid = req.userContext
+        var query = querystring.stringify({search: 'profile.delegatedAgents eq "' + userid + '"'})
         var resp = await axios.get(process.env.TENANT + 'api/v1/users/?'+query)
         res.json(resp.data)
     } catch(error){
@@ -21,13 +22,14 @@ router.get("/", async function(req,res) {
 //set the user as delegated to that entity
 router.post("/", async function(req,res) {
     try{
+        var userid = req.userContext
         var entityQuery = await axios.get(process.env.TENANT+'api/v1/users/'+req.body.entityid)
         if(entityQuery.data.type.id != process.env.ENTITY_TYPE_ID){
             res.status(500).json({error: "Not an entity"})
         }
         else{
             entityQuery.data.profile.delegatedAgents.forEach(element => {
-                if(element === req.query.id){
+                if(element === userid){
                     match = true
                 }
             })             
