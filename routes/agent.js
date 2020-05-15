@@ -11,7 +11,9 @@ router.get("/", async function(req,res) {
     try{
         var userid = req.userContext
         var query = querystring.stringify({search: 'profile.delegatedAgents eq "' + userid + '"'})
+        console.log(process.env.TENANT + 'api/v1/users/?'+query)
         var resp = await axios.get(process.env.TENANT + 'api/v1/users/?'+query)
+        console.log(resp)
         res.json(resp.data)
     } catch(error){
         console.log(error)
