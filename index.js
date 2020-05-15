@@ -18,8 +18,8 @@ const oktaJwtVerifier = new OktaJwtVerifier({
 app.use(function(req,res,next){
     var authz = req.header("Authorization")
     if(authz.startsWith("Bearer")){
-      console.log(authz.split(' '[1]))
-      oktaJwtVerifier.verifyAccessToken(authz.split(' '[1]),process.env.TOKEN_AUD)
+      console.log(authz.replace("Bearer",""))
+      oktaJwtVerifier.verifyAccessToken(authz.replace("Bearer","")),process.env.TOKEN_AUD)
       .then(jwt => {
           req.userContext = jwt.claims.sub
           return next();
