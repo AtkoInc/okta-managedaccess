@@ -12,7 +12,6 @@ axios.defaults.headers.common['Authorization'] = `SSWS `+process.env.TOKEN
 
 const oktaJwtVerifier = new OktaJwtVerifier({
   issuer: process.env.ISSUER,
-  clientId: process.env.CLIENT_ID,
   });
 
 app.use(function(req,res,next){
