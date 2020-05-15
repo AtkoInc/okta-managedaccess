@@ -34,8 +34,6 @@ module.exports = function (){
                         ]
                     }
                     structure[commands].push(customerCodeCommand)
-
-                    structure[commands].push(loaCommand)
                 }
             }
             res.status(200).json(structure)
