@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const axios = require('axios')
 const bodyParser = require('body-parser')
+const OktaJwtVerifier = require("@okta/jwt-verifier")
 
 app = express()
 
