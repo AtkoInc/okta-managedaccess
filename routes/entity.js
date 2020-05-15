@@ -27,10 +27,20 @@ router.get("/agents", async function(req,res) {
 
 router.post("/agents", async function(req,res) {
     try{
+        var agentid;
+        try{
+            var resp = await axios.get(process.env.TENANT+'api/v1/users/'+req.query.agentid)
+            var agentid = resp.data.id
+        } catch (error){
+            //could not find that user
+            res.status(404).send("user " + req.body.agentid + " not found")
+            return
+        }
+
         var resp = await axios.get(process.env.TENANT+'api/v1/users/'+req.query.id)
         if(resp.data.type.id == process.env.ENTITY_TYPE_ID){
             var agents = resp.data.profile.delegatedAgents
-            agents.push(req.query.agentid)
+            agents.push(agentid)
             var payload = {
                 profile: {
                     delegatedAgents: agents
