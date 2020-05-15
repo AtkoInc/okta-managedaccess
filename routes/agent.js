@@ -3,6 +3,7 @@ const router = express.Router()
 const axios = require('axios')
 var querystring = require("querystring");
 var cache = require('memory-cache');
+const uuidv1 = require('uuid/v1');
 
 module.exports = function (){
 
@@ -11,9 +12,7 @@ router.get("/", async function(req,res) {
     try{
         var userid = req.userContext
         var query = querystring.stringify({search: 'profile.delegatedAgents eq "' + userid + '"'})
-        console.log(process.env.TENANT + 'api/v1/users/?'+query)
         var resp = await axios.get(process.env.TENANT + 'api/v1/users/?'+query)
-        console.log(resp)
         res.json(resp.data)
     } catch(error){
         console.log(error)
@@ -36,10 +35,17 @@ router.post("/", async function(req,res) {
                 }
             })             
             if(match){
-                cache.put(req.body.sessionid,req.body.entityid,10000,function(key,value){
+                var cacheid
+                if(req.body.sessionid){
+                    cacheid == req.body.sessionid
+                }
+                else{
+                    cacheid = uuidv1()
+                }
+                cache.put(cacheid,req.body.entityid,10000,function(key,value){
                     console.log("Session "+key+ " expired for "+value)
                 })
-                res.status(200).send();
+                res.status(200).send({id:cacheid});
             }
             else{
                 res.status(401).json({error: "User is not delegated by that entity."})
