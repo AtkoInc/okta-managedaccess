@@ -21,7 +21,7 @@ app.use(function(req,res,next){
       console.log(authz.replace("Bearer ",""))
       oktaJwtVerifier.verifyAccessToken(authz.replace("Bearer ",""),process.env.TOKEN_AUD)
       .then(jwt => {
-          req.userContext = jwt.claims.sub
+          req.userContext = jwt.claims.uid
           return next();
       })
       .catch(err => {
