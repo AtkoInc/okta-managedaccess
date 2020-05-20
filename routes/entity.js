@@ -40,6 +40,9 @@ router.post("/agents", async function(req,res) {
         var resp = await axios.get(process.env.TENANT+'api/v1/users/'+req.query.id)
         if(resp.data.type.id == process.env.ENTITY_TYPE_ID){
             var agents = resp.data.profile.delegatedAgents
+            if (agents == null){
+                agents = []
+            }
             agents.push(agentid)
             var payload = {
                 profile: {
