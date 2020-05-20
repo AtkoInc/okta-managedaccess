@@ -23,17 +23,41 @@ module.exports = function (){
                 });              
                 
                 if(match){
-                    var customerCodeCommand = {
+                    var behalfLoginCommand = {
                         'type': 'com.okta.access.patch',
                         'value': [
                             {
                                 'op': 'add',
-                                'path': '/claims/customer_code',
+                                'path': '/claims/on_behalf_username',
+                                'value': resp.data.profile.login
+                            }
+                        ]
+                    }
+                    structure[commands].push(behalfLoginCommand)
+
+                    var behalfEmailCommand = {
+                        'type': 'com.okta.access.patch',
+                        'value': [
+                            {
+                                'op': 'add',
+                                'path': '/claims/on_behalf_email',
+                                'value': resp.data.profile.email
+                            }
+                        ]
+                    }
+                    structure[commands].push(behalfEmailCommand)
+
+                    var behalfCustomerCodeCommand = {
+                        'type': 'com.okta.access.patch',
+                        'value': [
+                            {
+                                'op': 'add',
+                                'path': '/claims/on_behalf_customer_code',
                                 'value': resp.data.profile.customerCode
                             }
                         ]
                     }
-                    structure[commands].push(customerCodeCommand)
+                    structure[commands].push(behalfCustomerCodeCommand)
                 }
             }
             res.status(200).json(structure)
